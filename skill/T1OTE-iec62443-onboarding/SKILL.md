@@ -1,5 +1,5 @@
 ---
-name: iec62443-onboarding
+name: T1OTE-iec62443-onboarding
 description: Guided onboarding of a Tenable OT site to an IEC 62443 zones-and-conduits baseline. Collects zones, CIDR blocks and conduits from chat or a spreadsheet, shows a plan, and only after approval creates asset groups and detection policies through the Tenable OT MCP (Enterprise Manager edition).
 status: draft
 ---

@@ -23,4 +23,4 @@ Each conduit declares one direction: `a_to_b`, `b_to_a`, or `bidirectional` (onl
 
 ## Naming
 
-All objects carry a prefix (default `IEC62443`) and use ` | ` as a separator, so a prefix search finds everything a run created. See `skill/iec62443-onboarding/references/naming.md`.
+All objects carry a prefix (default `IEC62443`) and use ` | ` as a separator, so a prefix search finds everything a run created. See `skill/T1OTE-iec62443-onboarding/references/naming.md`.

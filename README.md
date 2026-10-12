@@ -17,7 +17,7 @@ Tenable OT has no native IEC 62443 zones or conduits (its own "zones" are a diff
 
 ## Install
 
-1. Copy `skill/iec62443-onboarding/` into your client's skills directory.
+1. Copy `skill/T1OTE-iec62443-onboarding/` into your client's skills directory.
 2. In the client, enable these tools from the MCP server and leave the rest off:
    - `list_paired_icps`, `tenable_ot_status`
    - `list_asset_groups`, `list_protocol_groups`, `list_schedule_groups`, `list_detection_policies`, `get_policy`
@@ -38,7 +38,7 @@ Ask the agent to onboard a site to IEC 62443. It will:
 Try the scripts without a Tenable system:
 
 ```
-cd skill/iec62443-onboarding/scripts
+cd skill/T1OTE-iec62443-onboarding/scripts
 python validate_model.py ../../../examples/sample-model.json
 python build_plan.py ../../../examples/sample-model.json --format md
 ```
@@ -62,7 +62,7 @@ Draft. The unit tests pass (`pytest tests/unit`), but the following have not yet
 ## Layout
 
 ```
-skill/iec62443-onboarding/   SKILL.md, scripts/, references/
+skill/T1OTE-iec62443-onboarding/   SKILL.md, scripts/, references/
 templates/                   onboarding-template.xlsx
 examples/                    sample model, filled workbook, sample plan
 tests/unit/                  unit tests
