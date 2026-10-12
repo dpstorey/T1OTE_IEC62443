@@ -12,14 +12,14 @@ Tenable OT has no native IEC 62443 zones or conduits (its own "zones" are a diff
 ## Requirements
 
 - The **Tenable OT MCP, Enterprise Manager edition** with write tools enabled, in a build that includes the narrow policy-creation tools (`create_conversation_policy` and friends). See [EM-MCP](https://github.com/dpstorey/EM-MCP) and its [Exchange listing](https://exchange.tenable.com/mcp-servers/tenable-ot-mcp-em-edition/). Without write tools the skill still works in plan-only mode.
-- An agent client that supports skills and MCP tools (tested design target: LibreChat with local models; Claude Code and Claude Desktop also fit).
+- An agent client that supports skills and MCP tools (tested with LibreChat and Qwen).
 - Python 3.9+ for the helper scripts; `openpyxl` only for spreadsheet input and the template.
 
 ## Install
 
 1. Copy `skill/T1OTE-iec62443-onboarding/` into your client's skills directory.
 2. In the client, enable these tools from the MCP server and leave the rest off:
-   - `list_paired_icps`, `tenable_ot_status`
+   - `list_paired_icps`, `tenable_ot_status`, `get_classification_summary` (data quality check)
    - `list_asset_groups`, `list_protocol_groups`, `list_schedule_groups`, `list_detection_policies`, `get_policy`
    - `create_asset_group`, `create_protocol_group`, `create_conversation_policy`, `disable_detection_policy`
    - optional: `create_asset_policy` (sample policies), `query_assets` (picking specific assets)
@@ -30,10 +30,11 @@ Tenable OT has no native IEC 62443 zones or conduits (its own "zones" are a diff
 Ask the agent to onboard a site to IEC 62443. It will:
 
 1. list your paired sites and ask which one (it never infers the site);
-2. offer a spreadsheet (`templates/onboarding-template.xlsx`, or generated with `generate_template.py`) or chat questions;
-3. validate the model (overlaps, bad CIDRs, missing directions, unknown protocols);
-4. show a numbered plan with object counts;
-5. apply it only after you say yes: every write is a dry run first, policies are created **disabled** by default, and a journal records each result so the run can be undone.
+2. report the site's data quality (the share of assets positively classified, against a target of 90% unless you set another) and warn if type-based groups would miss assets;
+3. offer a spreadsheet (`templates/onboarding-template.xlsx`, or generated with `generate_template.py`) or chat questions;
+4. validate the model (overlaps, bad CIDRs, missing directions, unknown protocols);
+5. show a numbered plan with object counts;
+6. apply it only after you say yes: every write is a dry run first, policies are created **disabled** by default, and a journal records each result so the run can be undone.
 
 Try the scripts without a Tenable system:
 
@@ -65,7 +66,9 @@ Also verified live: protocol groups using the enum values `ETHIP` (EtherNet/IP),
 
 Sample filter groups: Tenable accepts a Filter group created with `type In [...]` (tested with `Controller`; it matched 8 assets). The other sample types (`Plc`, `Rtu`, `Ied`, `Hmi`, `OtWorkstation`, `Firewall`) come from the asset-type list the Tenable OT MCP already uses for asset queries; they are expected to work but were not each created live.
 
-Not yet verified live: direction behaviour with UDP. Treat the first run as a dry run on a test site.
+Data quality check: `get_classification_summary` was verified live across two sites (a site at 58.3% rated poor and a site at 94.8% rated good against the default 90% target). Asset type filters accept the Tenable UI labels (for example "BMS Controller") as well as enum values.
+
+Untested: the one-way direction rule has not been tested with UDP or mid-connection TCP traffic. Treat the first run as a dry run on a test site.
 
 ## Layout
 
