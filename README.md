@@ -25,6 +25,14 @@ Tenable OT has no native IEC 62443 zones or conduits (its own "zones" are a diff
    - optional: `create_asset_policy` (sample policies), `query_assets` (picking specific assets)
 3. Install the one dependency if you want spreadsheet input: `pip install openpyxl`.
 
+### LibreChat
+
+Tested with LibreChat and Qwen.
+
+1. Copy the `skill/T1OTE-iec62443-onboarding/` folder into the skills directory your LibreChat instance loads skills from, so it sits beside your other skill folders. The skill's `name:` is `t1ote-iec62443-onboarding`; the folder name can differ.
+2. Add the Tenable OT MCP server (Enterprise Manager edition, with write tools enabled) to your LibreChat agent and enable the tools listed above.
+3. Restart or reload LibreChat so it picks up the new skill, then start a new chat with the agent and ask it to onboard a site to IEC 62443.
+
 ## Quick start
 
 Ask the agent to onboard a site to IEC 62443. It will:
