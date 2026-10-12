@@ -39,7 +39,7 @@
         }
       ],
       "transport": "mixed",
-      "verify": true
+      "verify": false
     },
     "dnp3": {
       "label": "DNP3",

@@ -100,7 +100,7 @@ Loop until `journal.py next` reports done:
 
 1. `journal.py next` gives the next step number (blocked means an earlier error; stop and ask).
 2. `journal.py resolve --step N` gives the real arguments with ids substituted. Use exactly those.
-3. **Lookup steps**: call the list tool, find the system group by name (`system: true`), then `journal.py record --status ok --ref <ref> --id <id>`. If it is absent, stop and tell the user.
+3. **Lookup steps**: call the list tool, find the system group by name (`system: true`), matching case-insensitively (Tenable shows "Any Protocol" and "Any Time"; the plan says "Any protocol"), then `journal.py record --status ok --ref <ref> --id <id>`. If it is absent, stop and tell the user.
 4. **Create steps**: call the tool with `dry_run=true`, check the preview, record `dry_run`. Then call with `dry_run=false`, read the id from the result (`id` in the group result; `policy_id` for the create_*_policy tools), record `ok` with `--id`. A failure is recorded as `error` and the loop stops.
 5. **needs_input steps** (`asset_names`): `query_assets` with the names, show matches, user confirms ids, then `create_asset_group(asset_ids=[...])`.
 6. **Verify steps**: re-read with the list tools and diff against the plan.

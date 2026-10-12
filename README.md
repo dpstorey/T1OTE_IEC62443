@@ -57,7 +57,13 @@ Per run it creates one boundary policy per zone (traffic to anywhere except the 
 
 ## Status
 
-Draft. The unit tests pass (`pytest tests/unit`), but the following have not yet been verified against a live Tenable OT system: acceptance of empty policy actions, the sample filter groups, protocol enum names for EtherNet/IP, IEC 61850 and PROFINET, locating the "Any Time" and "Any protocol" system groups by name, and direction behaviour with UDP. Treat the first run as a dry run on a test site.
+Draft. The unit tests pass (`pytest tests/unit`) and CI is green.
+
+Verified on a live Tenable OT site: an unauthorized-conversation (boundary) policy created with empty policy actions and created disabled (`initial_state=disabled`, a create followed by a disable), the system "Any Time" schedule and "Any Protocol" protocol groups, and a destination of one negated list per zone block, which shows in the UI as "(Not in zone A) and (Not in zone B)".
+
+Also verified live: a protocol group using the EtherNet/IP enum value `ETHIP`, and that Tenable accepts a user-defined group whose name matches a predefined one.
+
+Not yet verified live: the sample filter groups, protocol enum names for IEC 61850 and PROFINET, and direction behaviour with UDP. Treat the first run as a dry run on a test site.
 
 ## Layout
 
