@@ -66,7 +66,7 @@ Per run it creates one boundary policy per zone (traffic to anywhere except the 
 
 ## Status
 
-Draft. The unit tests pass (`pytest tests/unit`) and CI is green.
+Production. The unit tests pass (`pytest tests/unit`) and CI is green.
 
 Verified on a live Tenable OT site: an unauthorized-conversation (boundary) policy created with empty policy actions and created disabled (`initial_state=disabled`, a create followed by a disable), the system "Any Time" schedule and "Any Protocol" protocol groups, and a destination of one negated list per zone block, which shows in the UI as "(Not in zone A) and (Not in zone B)".
 
