@@ -1,0 +1,249 @@
+{
+  "_comment": "Allowed-protocol catalogue. 'items' use EM-MCP create_protocol_group item shape {protocol,start_port?,end_port?}. protocol values are assumed Tenable ProtocolSuperType names; 'verify' marks entries to confirm against the target version's enum in the lab before first apply. 'transport' drives the direction-sensitivity flag (udp/mixed = direction may flip).",
+  "protocols": {
+    "modbus": {
+      "label": "Modbus/TCP",
+      "items": [
+        {
+          "protocol": "MODBUS"
+        }
+      ],
+      "transport": "tcp",
+      "verify": false
+    },
+    "s7": {
+      "label": "Siemens S7",
+      "items": [
+        {
+          "protocol": "S7"
+        }
+      ],
+      "transport": "tcp",
+      "verify": false
+    },
+    "cip": {
+      "label": "CIP (explicit)",
+      "items": [
+        {
+          "protocol": "CIP"
+        }
+      ],
+      "transport": "tcp",
+      "verify": false
+    },
+    "ethernet/ip": {
+      "label": "EtherNet/IP",
+      "items": [
+        {
+          "protocol": "ETHIP"
+        }
+      ],
+      "transport": "mixed",
+      "verify": true
+    },
+    "dnp3": {
+      "label": "DNP3",
+      "items": [
+        {
+          "protocol": "DNP3"
+        }
+      ],
+      "transport": "mixed",
+      "verify": false
+    },
+    "iec 104": {
+      "label": "IEC 60870-5-104",
+      "items": [
+        {
+          "protocol": "IEC104"
+        }
+      ],
+      "transport": "tcp",
+      "verify": false
+    },
+    "iec 61850": {
+      "label": "IEC 61850 (MMS)",
+      "items": [
+        {
+          "protocol": "IEC61850"
+        }
+      ],
+      "transport": "mixed",
+      "verify": true
+    },
+    "profinet": {
+      "label": "PROFINET",
+      "items": [
+        {
+          "protocol": "PROFINET"
+        }
+      ],
+      "transport": "mixed",
+      "verify": true
+    },
+    "opc ua": {
+      "label": "OPC UA (binary)",
+      "items": [
+        {
+          "protocol": "TCP",
+          "start_port": 4840,
+          "end_port": 4840
+        }
+      ],
+      "transport": "tcp",
+      "verify": false
+    },
+    "https": {
+      "label": "HTTPS",
+      "items": [
+        {
+          "protocol": "TCP",
+          "start_port": 443,
+          "end_port": 443
+        }
+      ],
+      "transport": "tcp",
+      "verify": false
+    },
+    "http": {
+      "label": "HTTP",
+      "items": [
+        {
+          "protocol": "TCP",
+          "start_port": 80,
+          "end_port": 80
+        }
+      ],
+      "transport": "tcp",
+      "verify": false
+    },
+    "ssh": {
+      "label": "SSH",
+      "items": [
+        {
+          "protocol": "TCP",
+          "start_port": 22,
+          "end_port": 22
+        }
+      ],
+      "transport": "tcp",
+      "verify": false
+    },
+    "rdp": {
+      "label": "RDP",
+      "items": [
+        {
+          "protocol": "TCP",
+          "start_port": 3389,
+          "end_port": 3389
+        }
+      ],
+      "transport": "tcp",
+      "verify": false
+    },
+    "ntp": {
+      "label": "NTP",
+      "items": [
+        {
+          "protocol": "UDP",
+          "start_port": 123,
+          "end_port": 123
+        }
+      ],
+      "transport": "udp",
+      "verify": false
+    },
+    "dns": {
+      "label": "DNS",
+      "items": [
+        {
+          "protocol": "UDP",
+          "start_port": 53,
+          "end_port": 53
+        },
+        {
+          "protocol": "TCP",
+          "start_port": 53,
+          "end_port": 53
+        }
+      ],
+      "transport": "mixed",
+      "verify": false
+    },
+    "snmp": {
+      "label": "SNMP",
+      "items": [
+        {
+          "protocol": "UDP",
+          "start_port": 161,
+          "end_port": 162
+        }
+      ],
+      "transport": "udp",
+      "verify": false
+    },
+    "syslog": {
+      "label": "Syslog",
+      "items": [
+        {
+          "protocol": "UDP",
+          "start_port": 514,
+          "end_port": 514
+        }
+      ],
+      "transport": "udp",
+      "verify": false
+    },
+    "bacnet": {
+      "label": "BACnet/IP",
+      "items": [
+        {
+          "protocol": "UDP",
+          "start_port": 47808,
+          "end_port": 47808
+        }
+      ],
+      "transport": "udp",
+      "verify": false
+    },
+    "telnet": {
+      "label": "Telnet",
+      "items": [
+        {
+          "protocol": "TCP",
+          "start_port": 23,
+          "end_port": 23
+        }
+      ],
+      "transport": "tcp",
+      "verify": false
+    }
+  },
+  "aliases": {
+    "modbus/tcp": "modbus",
+    "modbus tcp": "modbus",
+    "siemens s7": "s7",
+    "s7comm": "s7",
+    "enip": "ethernet/ip",
+    "ethernet ip": "ethernet/ip",
+    "ethernetip": "ethernet/ip",
+    "ethip": "ethernet/ip",
+    "iec104": "iec 104",
+    "iec-104": "iec 104",
+    "iec 60870-5-104": "iec 104",
+    "iec61850": "iec 61850",
+    "mms": "iec 61850",
+    "opcua": "opc ua",
+    "opc-ua": "opc ua",
+    "opc ua tcp": "opc ua",
+    "web": "https",
+    "tls": "https",
+    "remote desktop": "rdp",
+    "bacnet/ip": "bacnet"
+  },
+  "remote_admin": [
+    "rdp",
+    "ssh",
+    "telnet"
+  ]
+}

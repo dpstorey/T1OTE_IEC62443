@@ -1,0 +1,58 @@
+{
+  "_comment": "Sample asset groups (create_sample_groups): Filter groups on the asset 'type' field (same expression the EM-MCP asset queries use). Whether the Filter group accepts this exact expression is a lab-verify item; a server rejection stops the apply. These are tags for browsing and for the sample policies, not zones.",
+  "groups": [
+    {
+      "key": "controllers",
+      "name": "Sample | PLCs",
+      "description": "All PLCs (dynamic by asset type)",
+      "types": [
+        "Plc"
+      ]
+    },
+    {
+      "key": "rtus",
+      "name": "Sample | RTUs",
+      "description": "All RTUs",
+      "types": [
+        "Rtu"
+      ]
+    },
+    {
+      "key": "ieds",
+      "name": "Sample | IEDs",
+      "description": "All IEDs",
+      "types": [
+        "Ied"
+      ]
+    },
+    {
+      "key": "hmis",
+      "name": "Sample | HMIs",
+      "description": "All HMIs",
+      "types": [
+        "Hmi"
+      ]
+    },
+    {
+      "key": "eng",
+      "name": "Sample | OT workstations",
+      "description": "OT workstations (engineering/operator)",
+      "types": [
+        "OtWorkstation"
+      ]
+    },
+    {
+      "key": "firewalls",
+      "name": "Sample | Firewalls",
+      "description": "All firewalls",
+      "types": [
+        "Firewall"
+      ]
+    }
+  ],
+  "controller_keys": [
+    "controllers",
+    "rtus",
+    "ieds"
+  ]
+}

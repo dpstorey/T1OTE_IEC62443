@@ -1,0 +1,22 @@
+{
+  "site": {"name": "Demo Plant", "customer": "Example Corp", "notes": "Synthetic example"},
+  "zones": [
+    {"name": "Enterprise", "description": "Corporate IT", "purdue_level": 4, "sl_target": 1, "criticality": "low"},
+    {"name": "DMZ", "description": "Historian and jump hosts", "purdue_level": 3, "sl_target": 2, "criticality": "medium"},
+    {"name": "Control", "description": "PLCs and I/O", "purdue_level": 1, "sl_target": 2, "criticality": "high"},
+    {"name": "Safety", "description": "Safety controllers", "purdue_level": 1, "sl_target": 3, "criticality": "high"}
+  ],
+  "members": [
+    {"zone": "Enterprise", "method": "cidr", "value": "10.1.0.0/16"},
+    {"zone": "DMZ", "method": "cidr", "value": "10.2.0.0/24"},
+    {"zone": "Control", "method": "cidr", "value": "10.10.1.0/24"},
+    {"zone": "Control", "method": "range", "value": "10.10.2.10", "end": "10.10.2.200"},
+    {"zone": "Safety", "method": "ip_list", "value": "10.20.0.10, 10.20.0.11"}
+  ],
+  "conduits": [
+    {"name": "Enterprise to DMZ", "zone_a": "Enterprise", "zone_b": "DMZ", "direction": "a_to_b", "allowed_protocols": ["HTTPS", "RDP"]},
+    {"name": "DMZ to Control", "zone_a": "DMZ", "zone_b": "Control", "direction": "a_to_b", "allowed_protocols": ["OPC UA", "Modbus"]},
+    {"name": "Control to Safety", "zone_a": "Control", "zone_b": "Safety", "direction": "bidirectional", "allowed_protocols": ["CIP"]}
+  ],
+  "options": {"create_sample_groups": true, "create_sample_policies": true, "policies_enabled": false, "severity": "medium", "name_prefix": "IEC62443"}
+}

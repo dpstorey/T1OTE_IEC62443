@@ -1,0 +1,1007 @@
+{
+  "site": {
+    "name": "Demo Plant",
+    "customer": "Example Corp",
+    "notes": "Synthetic example"
+  },
+  "options": {
+    "create_sample_groups": true,
+    "create_sample_policies": true,
+    "policies_enabled": false,
+    "severity": "medium",
+    "name_prefix": "IEC62443",
+    "direction_tolerant": false,
+    "allow_overlap": false
+  },
+  "summary": {
+    "asset_groups_create": 11,
+    "protocol_groups_create": 4,
+    "policies_create": 14,
+    "skipped_existing": 0,
+    "needs_input": 0,
+    "policies_initial_state": "disabled",
+    "writes_total": 29
+  },
+  "warnings": [],
+  "blocked_on": [],
+  "known_refs": {},
+  "steps": [
+    {
+      "n": 1,
+      "phase": "0 lookup",
+      "action": "lookup",
+      "tool": "list_schedule_groups",
+      "args": {
+        "find_name": "Any Time"
+      },
+      "ref": "sched:Any Time",
+      "risk": "low",
+      "reversible": true,
+      "undo": null,
+      "note": "Find the system group named 'Any Time' (system=true) and record its id with journal.py. Stop if absent."
+    },
+    {
+      "n": 2,
+      "phase": "0 lookup",
+      "action": "lookup",
+      "tool": "list_protocol_groups",
+      "args": {
+        "find_name": "Any protocol"
+      },
+      "ref": "pg:Any protocol",
+      "risk": "low",
+      "reversible": true,
+      "undo": null,
+      "note": "Find the system group named 'Any protocol' (system=true) and record its id with journal.py. Stop if absent."
+    },
+    {
+      "n": 3,
+      "phase": "1 protocol groups",
+      "action": "create",
+      "tool": "create_protocol_group",
+      "args": {
+        "name": "IEC62443 | Allowed | Enterprise to DMZ",
+        "items": [
+          {
+            "protocol": "TCP",
+            "start_port": 443,
+            "end_port": 443
+          },
+          {
+            "protocol": "TCP",
+            "start_port": 3389,
+            "end_port": 3389
+          }
+        ]
+      },
+      "ref": "pg:IEC62443 | Allowed | Enterprise to DMZ",
+      "risk": "low",
+      "reversible": true,
+      "undo": {
+        "tool": "archive_protocol_group",
+        "args": {
+          "group_id": "$id"
+        },
+        "note": "archive is irreversible; groups are unreferenced once policies are disabled"
+      },
+      "note": "Allowed protocols for this conduit."
+    },
+    {
+      "n": 4,
+      "phase": "1 protocol groups",
+      "action": "create",
+      "tool": "create_protocol_group",
+      "args": {
+        "name": "IEC62443 | Allowed | DMZ to Control",
+        "items": [
+          {
+            "protocol": "TCP",
+            "start_port": 4840,
+            "end_port": 4840
+          },
+          {
+            "protocol": "MODBUS"
+          }
+        ]
+      },
+      "ref": "pg:IEC62443 | Allowed | DMZ to Control",
+      "risk": "low",
+      "reversible": true,
+      "undo": {
+        "tool": "archive_protocol_group",
+        "args": {
+          "group_id": "$id"
+        },
+        "note": "archive is irreversible; groups are unreferenced once policies are disabled"
+      },
+      "note": "Allowed protocols for this conduit."
+    },
+    {
+      "n": 5,
+      "phase": "1 protocol groups",
+      "action": "create",
+      "tool": "create_protocol_group",
+      "args": {
+        "name": "IEC62443 | Allowed | Control to Safety",
+        "items": [
+          {
+            "protocol": "CIP"
+          }
+        ]
+      },
+      "ref": "pg:IEC62443 | Allowed | Control to Safety",
+      "risk": "low",
+      "reversible": true,
+      "undo": {
+        "tool": "archive_protocol_group",
+        "args": {
+          "group_id": "$id"
+        },
+        "note": "archive is irreversible; groups are unreferenced once policies are disabled"
+      },
+      "note": "Allowed protocols for this conduit."
+    },
+    {
+      "n": 6,
+      "phase": "2 zone groups",
+      "action": "create",
+      "tool": "create_asset_group",
+      "args": {
+        "name": "IEC62443 | Zone | Enterprise",
+        "description": "IEC 62443 zone 'Enterprise'",
+        "display_tag": true,
+        "cidr": "10.1.0.0/16"
+      },
+      "ref": "ag:IEC62443 | Zone | Enterprise",
+      "risk": "low",
+      "reversible": true,
+      "undo": {
+        "tool": "archive_asset_group",
+        "args": {
+          "group_id": "$id"
+        },
+        "note": "archive is irreversible; groups are unreferenced once policies are disabled"
+      },
+      "note": "cidr membership; dynamic for address-based methods."
+    },
+    {
+      "n": 7,
+      "phase": "2 zone groups",
+      "action": "create",
+      "tool": "create_asset_group",
+      "args": {
+        "name": "IEC62443 | Zone | DMZ",
+        "description": "IEC 62443 zone 'DMZ'",
+        "display_tag": true,
+        "cidr": "10.2.0.0/24"
+      },
+      "ref": "ag:IEC62443 | Zone | DMZ",
+      "risk": "low",
+      "reversible": true,
+      "undo": {
+        "tool": "archive_asset_group",
+        "args": {
+          "group_id": "$id"
+        },
+        "note": "archive is irreversible; groups are unreferenced once policies are disabled"
+      },
+      "note": "cidr membership; dynamic for address-based methods."
+    },
+    {
+      "n": 8,
+      "phase": "2 zone groups",
+      "action": "create",
+      "tool": "create_asset_group",
+      "args": {
+        "name": "IEC62443 | Zone | Control | 1",
+        "description": "IEC 62443 zone 'Control'",
+        "display_tag": true,
+        "cidr": "10.10.1.0/24"
+      },
+      "ref": "ag:IEC62443 | Zone | Control | 1",
+      "risk": "low",
+      "reversible": true,
+      "undo": {
+        "tool": "archive_asset_group",
+        "args": {
+          "group_id": "$id"
+        },
+        "note": "archive is irreversible; groups are unreferenced once policies are disabled"
+      },
+      "note": "cidr membership; dynamic for address-based methods."
+    },
+    {
+      "n": 9,
+      "phase": "2 zone groups",
+      "action": "create",
+      "tool": "create_asset_group",
+      "args": {
+        "name": "IEC62443 | Zone | Control | 2",
+        "description": "IEC 62443 zone 'Control'",
+        "display_tag": true,
+        "start_ip": "10.10.2.10",
+        "end_ip": "10.10.2.200"
+      },
+      "ref": "ag:IEC62443 | Zone | Control | 2",
+      "risk": "low",
+      "reversible": true,
+      "undo": {
+        "tool": "archive_asset_group",
+        "args": {
+          "group_id": "$id"
+        },
+        "note": "archive is irreversible; groups are unreferenced once policies are disabled"
+      },
+      "note": "range membership; dynamic for address-based methods."
+    },
+    {
+      "n": 10,
+      "phase": "2 zone groups",
+      "action": "create",
+      "tool": "create_asset_group",
+      "args": {
+        "name": "IEC62443 | Zone | Safety",
+        "description": "IEC 62443 zone 'Safety'",
+        "display_tag": true,
+        "ips": [
+          "10.20.0.10",
+          "10.20.0.11"
+        ]
+      },
+      "ref": "ag:IEC62443 | Zone | Safety",
+      "risk": "low",
+      "reversible": true,
+      "undo": {
+        "tool": "archive_asset_group",
+        "args": {
+          "group_id": "$id"
+        },
+        "note": "archive is irreversible; groups are unreferenced once policies are disabled"
+      },
+      "note": "ip_list membership; dynamic for address-based methods."
+    },
+    {
+      "n": 11,
+      "phase": "3 sample groups",
+      "action": "create",
+      "tool": "create_asset_group",
+      "args": {
+        "name": "IEC62443 | Sample | PLCs",
+        "filter": {
+          "field": "type",
+          "op": "In",
+          "values": [
+            "Plc"
+          ]
+        },
+        "description": "All PLCs (dynamic by asset type)",
+        "display_tag": true
+      },
+      "ref": "ag:IEC62443 | Sample | PLCs",
+      "risk": "low",
+      "reversible": true,
+      "undo": {
+        "tool": "archive_asset_group",
+        "args": {
+          "group_id": "$id"
+        },
+        "note": "archive is irreversible; groups are unreferenced once policies are disabled"
+      },
+      "note": "Sample tag group (Filter on asset type; lab-verify the filter shape on first apply)."
+    },
+    {
+      "n": 12,
+      "phase": "3 sample groups",
+      "action": "create",
+      "tool": "create_asset_group",
+      "args": {
+        "name": "IEC62443 | Sample | RTUs",
+        "filter": {
+          "field": "type",
+          "op": "In",
+          "values": [
+            "Rtu"
+          ]
+        },
+        "description": "All RTUs",
+        "display_tag": true
+      },
+      "ref": "ag:IEC62443 | Sample | RTUs",
+      "risk": "low",
+      "reversible": true,
+      "undo": {
+        "tool": "archive_asset_group",
+        "args": {
+          "group_id": "$id"
+        },
+        "note": "archive is irreversible; groups are unreferenced once policies are disabled"
+      },
+      "note": "Sample tag group (Filter on asset type; lab-verify the filter shape on first apply)."
+    },
+    {
+      "n": 13,
+      "phase": "3 sample groups",
+      "action": "create",
+      "tool": "create_asset_group",
+      "args": {
+        "name": "IEC62443 | Sample | IEDs",
+        "filter": {
+          "field": "type",
+          "op": "In",
+          "values": [
+            "Ied"
+          ]
+        },
+        "description": "All IEDs",
+        "display_tag": true
+      },
+      "ref": "ag:IEC62443 | Sample | IEDs",
+      "risk": "low",
+      "reversible": true,
+      "undo": {
+        "tool": "archive_asset_group",
+        "args": {
+          "group_id": "$id"
+        },
+        "note": "archive is irreversible; groups are unreferenced once policies are disabled"
+      },
+      "note": "Sample tag group (Filter on asset type; lab-verify the filter shape on first apply)."
+    },
+    {
+      "n": 14,
+      "phase": "3 sample groups",
+      "action": "create",
+      "tool": "create_asset_group",
+      "args": {
+        "name": "IEC62443 | Sample | HMIs",
+        "filter": {
+          "field": "type",
+          "op": "In",
+          "values": [
+            "Hmi"
+          ]
+        },
+        "description": "All HMIs",
+        "display_tag": true
+      },
+      "ref": "ag:IEC62443 | Sample | HMIs",
+      "risk": "low",
+      "reversible": true,
+      "undo": {
+        "tool": "archive_asset_group",
+        "args": {
+          "group_id": "$id"
+        },
+        "note": "archive is irreversible; groups are unreferenced once policies are disabled"
+      },
+      "note": "Sample tag group (Filter on asset type; lab-verify the filter shape on first apply)."
+    },
+    {
+      "n": 15,
+      "phase": "3 sample groups",
+      "action": "create",
+      "tool": "create_asset_group",
+      "args": {
+        "name": "IEC62443 | Sample | OT workstations",
+        "filter": {
+          "field": "type",
+          "op": "In",
+          "values": [
+            "OtWorkstation"
+          ]
+        },
+        "description": "OT workstations (engineering/operator)",
+        "display_tag": true
+      },
+      "ref": "ag:IEC62443 | Sample | OT workstations",
+      "risk": "low",
+      "reversible": true,
+      "undo": {
+        "tool": "archive_asset_group",
+        "args": {
+          "group_id": "$id"
+        },
+        "note": "archive is irreversible; groups are unreferenced once policies are disabled"
+      },
+      "note": "Sample tag group (Filter on asset type; lab-verify the filter shape on first apply)."
+    },
+    {
+      "n": 16,
+      "phase": "3 sample groups",
+      "action": "create",
+      "tool": "create_asset_group",
+      "args": {
+        "name": "IEC62443 | Sample | Firewalls",
+        "filter": {
+          "field": "type",
+          "op": "In",
+          "values": [
+            "Firewall"
+          ]
+        },
+        "description": "All firewalls",
+        "display_tag": true
+      },
+      "ref": "ag:IEC62443 | Sample | Firewalls",
+      "risk": "low",
+      "reversible": true,
+      "undo": {
+        "tool": "archive_asset_group",
+        "args": {
+          "group_id": "$id"
+        },
+        "note": "archive is irreversible; groups are unreferenced once policies are disabled"
+      },
+      "note": "Sample tag group (Filter on asset type; lab-verify the filter shape on first apply)."
+    },
+    {
+      "n": 17,
+      "phase": "4 policies",
+      "action": "create",
+      "tool": "create_conversation_policy",
+      "args": {
+        "title": "IEC62443 | Boundary | Enterprise -> outside",
+        "level": "medium",
+        "initial_state": "disabled",
+        "src": [
+          [
+            "$ref:ag:IEC62443 | Zone | Enterprise"
+          ]
+        ],
+        "dst": [
+          [
+            "!$ref:ag:IEC62443 | Zone | Enterprise"
+          ],
+          [
+            "!$ref:ag:IEC62443 | Zone | DMZ"
+          ]
+        ],
+        "schedule_group_id": "$ref:sched:Any Time",
+        "protocol_group_id": "$ref:pg:Any protocol"
+      },
+      "ref": "pol:IEC62443 | Boundary | Enterprise -> outside",
+      "risk": "medium",
+      "reversible": true,
+      "undo": {
+        "tool": "disable_detection_policy",
+        "args": {
+          "policy_id": "$id"
+        },
+        "note": "disable is reversible; prefer it over archive"
+      },
+      "note": "Traffic from 'Enterprise' to anywhere except itself and permitted targets (DMZ)."
+    },
+    {
+      "n": 18,
+      "phase": "4 policies",
+      "action": "create",
+      "tool": "create_conversation_policy",
+      "args": {
+        "title": "IEC62443 | Boundary | DMZ -> outside",
+        "level": "medium",
+        "initial_state": "disabled",
+        "src": [
+          [
+            "$ref:ag:IEC62443 | Zone | DMZ"
+          ]
+        ],
+        "dst": [
+          [
+            "!$ref:ag:IEC62443 | Zone | DMZ"
+          ],
+          [
+            "!$ref:ag:IEC62443 | Zone | Control | 1"
+          ],
+          [
+            "!$ref:ag:IEC62443 | Zone | Control | 2"
+          ]
+        ],
+        "schedule_group_id": "$ref:sched:Any Time",
+        "protocol_group_id": "$ref:pg:Any protocol"
+      },
+      "ref": "pol:IEC62443 | Boundary | DMZ -> outside",
+      "risk": "medium",
+      "reversible": true,
+      "undo": {
+        "tool": "disable_detection_policy",
+        "args": {
+          "policy_id": "$id"
+        },
+        "note": "disable is reversible; prefer it over archive"
+      },
+      "note": "Traffic from 'DMZ' to anywhere except itself and permitted targets (Control)."
+    },
+    {
+      "n": 19,
+      "phase": "4 policies",
+      "action": "create",
+      "tool": "create_conversation_policy",
+      "args": {
+        "title": "IEC62443 | Boundary | Control -> outside",
+        "level": "medium",
+        "initial_state": "disabled",
+        "src": [
+          [
+            "$ref:ag:IEC62443 | Zone | Control | 1",
+            "$ref:ag:IEC62443 | Zone | Control | 2"
+          ]
+        ],
+        "dst": [
+          [
+            "!$ref:ag:IEC62443 | Zone | Control | 1"
+          ],
+          [
+            "!$ref:ag:IEC62443 | Zone | Control | 2"
+          ],
+          [
+            "!$ref:ag:IEC62443 | Zone | Safety"
+          ]
+        ],
+        "schedule_group_id": "$ref:sched:Any Time",
+        "protocol_group_id": "$ref:pg:Any protocol"
+      },
+      "ref": "pol:IEC62443 | Boundary | Control -> outside",
+      "risk": "medium",
+      "reversible": true,
+      "undo": {
+        "tool": "disable_detection_policy",
+        "args": {
+          "policy_id": "$id"
+        },
+        "note": "disable is reversible; prefer it over archive"
+      },
+      "note": "Traffic from 'Control' to anywhere except itself and permitted targets (Safety)."
+    },
+    {
+      "n": 20,
+      "phase": "4 policies",
+      "action": "create",
+      "tool": "create_conversation_policy",
+      "args": {
+        "title": "IEC62443 | Boundary | Safety -> outside",
+        "level": "medium",
+        "initial_state": "disabled",
+        "src": [
+          [
+            "$ref:ag:IEC62443 | Zone | Safety"
+          ]
+        ],
+        "dst": [
+          [
+            "!$ref:ag:IEC62443 | Zone | Safety"
+          ],
+          [
+            "!$ref:ag:IEC62443 | Zone | Control | 1"
+          ],
+          [
+            "!$ref:ag:IEC62443 | Zone | Control | 2"
+          ]
+        ],
+        "schedule_group_id": "$ref:sched:Any Time",
+        "protocol_group_id": "$ref:pg:Any protocol"
+      },
+      "ref": "pol:IEC62443 | Boundary | Safety -> outside",
+      "risk": "medium",
+      "reversible": true,
+      "undo": {
+        "tool": "disable_detection_policy",
+        "args": {
+          "policy_id": "$id"
+        },
+        "note": "disable is reversible; prefer it over archive"
+      },
+      "note": "Traffic from 'Safety' to anywhere except itself and permitted targets (Control)."
+    },
+    {
+      "n": 21,
+      "phase": "4 policies",
+      "action": "create",
+      "tool": "create_conversation_policy",
+      "args": {
+        "title": "IEC62443 | Boundary | unzoned -> zones",
+        "level": "medium",
+        "initial_state": "disabled",
+        "src": [
+          [
+            "!$ref:ag:IEC62443 | Zone | Enterprise"
+          ],
+          [
+            "!$ref:ag:IEC62443 | Zone | DMZ"
+          ],
+          [
+            "!$ref:ag:IEC62443 | Zone | Control | 1"
+          ],
+          [
+            "!$ref:ag:IEC62443 | Zone | Control | 2"
+          ],
+          [
+            "!$ref:ag:IEC62443 | Zone | Safety"
+          ]
+        ],
+        "dst": [
+          [
+            "$ref:ag:IEC62443 | Zone | Enterprise",
+            "$ref:ag:IEC62443 | Zone | DMZ",
+            "$ref:ag:IEC62443 | Zone | Control | 1",
+            "$ref:ag:IEC62443 | Zone | Control | 2",
+            "$ref:ag:IEC62443 | Zone | Safety"
+          ]
+        ],
+        "schedule_group_id": "$ref:sched:Any Time",
+        "protocol_group_id": "$ref:pg:Any protocol"
+      },
+      "ref": "pol:IEC62443 | Boundary | unzoned -> zones",
+      "risk": "medium",
+      "reversible": true,
+      "undo": {
+        "tool": "disable_detection_policy",
+        "args": {
+          "policy_id": "$id"
+        },
+        "note": "disable is reversible; prefer it over archive"
+      },
+      "note": "Traffic from assets in no declared zone into any declared zone."
+    },
+    {
+      "n": 22,
+      "phase": "4 policies",
+      "action": "create",
+      "tool": "create_conversation_policy",
+      "args": {
+        "title": "IEC62443 | Conduit | Enterprise to DMZ | Enterprise -> DMZ disallowed protocol",
+        "level": "medium",
+        "initial_state": "disabled",
+        "src": [
+          [
+            "$ref:ag:IEC62443 | Zone | Enterprise"
+          ]
+        ],
+        "dst": [
+          [
+            "$ref:ag:IEC62443 | Zone | DMZ"
+          ]
+        ],
+        "schedule_group_id": "$ref:sched:Any Time",
+        "protocol_group_id": "!$ref:pg:IEC62443 | Allowed | Enterprise to DMZ"
+      },
+      "ref": "pol:IEC62443 | Conduit | Enterprise to DMZ | Enterprise -> DMZ disallowed protocol",
+      "risk": "medium",
+      "reversible": true,
+      "undo": {
+        "tool": "disable_detection_policy",
+        "args": {
+          "policy_id": "$id"
+        },
+        "note": "disable is reversible; prefer it over archive"
+      },
+      "note": "Enterprise -> DMZ using anything outside the conduit's allowed protocols."
+    },
+    {
+      "n": 23,
+      "phase": "4 policies",
+      "action": "create",
+      "tool": "create_conversation_policy",
+      "args": {
+        "title": "IEC62443 | Conduit | DMZ to Control | DMZ -> Control disallowed protocol",
+        "level": "medium",
+        "initial_state": "disabled",
+        "src": [
+          [
+            "$ref:ag:IEC62443 | Zone | DMZ"
+          ]
+        ],
+        "dst": [
+          [
+            "$ref:ag:IEC62443 | Zone | Control | 1",
+            "$ref:ag:IEC62443 | Zone | Control | 2"
+          ]
+        ],
+        "schedule_group_id": "$ref:sched:Any Time",
+        "protocol_group_id": "!$ref:pg:IEC62443 | Allowed | DMZ to Control"
+      },
+      "ref": "pol:IEC62443 | Conduit | DMZ to Control | DMZ -> Control disallowed protocol",
+      "risk": "medium",
+      "reversible": true,
+      "undo": {
+        "tool": "disable_detection_policy",
+        "args": {
+          "policy_id": "$id"
+        },
+        "note": "disable is reversible; prefer it over archive"
+      },
+      "note": "DMZ -> Control using anything outside the conduit's allowed protocols."
+    },
+    {
+      "n": 24,
+      "phase": "4 policies",
+      "action": "create",
+      "tool": "create_conversation_policy",
+      "args": {
+        "title": "IEC62443 | Conduit | Control to Safety | Control -> Safety disallowed protocol",
+        "level": "medium",
+        "initial_state": "disabled",
+        "src": [
+          [
+            "$ref:ag:IEC62443 | Zone | Control | 1",
+            "$ref:ag:IEC62443 | Zone | Control | 2"
+          ]
+        ],
+        "dst": [
+          [
+            "$ref:ag:IEC62443 | Zone | Safety"
+          ]
+        ],
+        "schedule_group_id": "$ref:sched:Any Time",
+        "protocol_group_id": "!$ref:pg:IEC62443 | Allowed | Control to Safety"
+      },
+      "ref": "pol:IEC62443 | Conduit | Control to Safety | Control -> Safety disallowed protocol",
+      "risk": "medium",
+      "reversible": true,
+      "undo": {
+        "tool": "disable_detection_policy",
+        "args": {
+          "policy_id": "$id"
+        },
+        "note": "disable is reversible; prefer it over archive"
+      },
+      "note": "Control -> Safety using anything outside the conduit's allowed protocols."
+    },
+    {
+      "n": 25,
+      "phase": "4 policies",
+      "action": "create",
+      "tool": "create_conversation_policy",
+      "args": {
+        "title": "IEC62443 | Conduit | Control to Safety | Safety -> Control disallowed protocol",
+        "level": "medium",
+        "initial_state": "disabled",
+        "src": [
+          [
+            "$ref:ag:IEC62443 | Zone | Safety"
+          ]
+        ],
+        "dst": [
+          [
+            "$ref:ag:IEC62443 | Zone | Control | 1",
+            "$ref:ag:IEC62443 | Zone | Control | 2"
+          ]
+        ],
+        "schedule_group_id": "$ref:sched:Any Time",
+        "protocol_group_id": "!$ref:pg:IEC62443 | Allowed | Control to Safety"
+      },
+      "ref": "pol:IEC62443 | Conduit | Control to Safety | Safety -> Control disallowed protocol",
+      "risk": "medium",
+      "reversible": true,
+      "undo": {
+        "tool": "disable_detection_policy",
+        "args": {
+          "policy_id": "$id"
+        },
+        "note": "disable is reversible; prefer it over archive"
+      },
+      "note": "Safety -> Control using anything outside the conduit's allowed protocols."
+    },
+    {
+      "n": 26,
+      "phase": "4 policies",
+      "action": "create",
+      "tool": "create_protocol_group",
+      "args": {
+        "name": "IEC62443 | Sample | Remote admin protocols",
+        "items": [
+          {
+            "protocol": "TCP",
+            "start_port": 3389,
+            "end_port": 3389
+          },
+          {
+            "protocol": "TCP",
+            "start_port": 22,
+            "end_port": 22
+          },
+          {
+            "protocol": "TCP",
+            "start_port": 23,
+            "end_port": 23
+          }
+        ]
+      },
+      "ref": "pg:IEC62443 | Sample | Remote admin protocols",
+      "risk": "low",
+      "reversible": true,
+      "undo": {
+        "tool": "archive_protocol_group",
+        "args": {
+          "group_id": "$id"
+        },
+        "note": "archive is irreversible; groups are unreferenced once policies are disabled"
+      },
+      "note": "RDP/SSH/Telnet for the sample policy."
+    },
+    {
+      "n": 27,
+      "phase": "4 policies",
+      "action": "create",
+      "tool": "create_conversation_policy",
+      "args": {
+        "title": "IEC62443 | Sample | Remote admin to controllers",
+        "level": "medium",
+        "initial_state": "disabled",
+        "src": [
+          [
+            "!$ref:ag:IEC62443 | Sample | PLCs"
+          ],
+          [
+            "!$ref:ag:IEC62443 | Sample | RTUs"
+          ],
+          [
+            "!$ref:ag:IEC62443 | Sample | IEDs"
+          ]
+        ],
+        "dst": [
+          [
+            "$ref:ag:IEC62443 | Sample | PLCs",
+            "$ref:ag:IEC62443 | Sample | RTUs",
+            "$ref:ag:IEC62443 | Sample | IEDs"
+          ]
+        ],
+        "schedule_group_id": "$ref:sched:Any Time",
+        "protocol_group_id": "$ref:pg:IEC62443 | Sample | Remote admin protocols"
+      },
+      "ref": "pol:IEC62443 | Sample | Remote admin to controllers",
+      "risk": "medium",
+      "reversible": true,
+      "undo": {
+        "tool": "disable_detection_policy",
+        "args": {
+          "policy_id": "$id"
+        },
+        "note": "disable is reversible; prefer it over archive"
+      },
+      "note": "Non-controller assets using remote-admin protocols to PLCs/RTUs/IEDs."
+    },
+    {
+      "n": 28,
+      "phase": "4 policies",
+      "action": "create",
+      "tool": "create_asset_policy",
+      "args": {
+        "title": "IEC62443 | Sample | New asset in Enterprise",
+        "level": "medium",
+        "initial_state": "disabled",
+        "event": "NewAssetDiscovered",
+        "src": [
+          [
+            "$ref:ag:IEC62443 | Zone | Enterprise"
+          ]
+        ],
+        "schedule_group_id": "$ref:sched:Any Time"
+      },
+      "ref": "pol:IEC62443 | Sample | New asset in Enterprise",
+      "risk": "medium",
+      "reversible": true,
+      "undo": {
+        "tool": "disable_detection_policy",
+        "args": {
+          "policy_id": "$id"
+        },
+        "note": "disable is reversible; prefer it over archive"
+      },
+      "note": "A new asset appears inside zone 'Enterprise'."
+    },
+    {
+      "n": 29,
+      "phase": "4 policies",
+      "action": "create",
+      "tool": "create_asset_policy",
+      "args": {
+        "title": "IEC62443 | Sample | New asset in DMZ",
+        "level": "medium",
+        "initial_state": "disabled",
+        "event": "NewAssetDiscovered",
+        "src": [
+          [
+            "$ref:ag:IEC62443 | Zone | DMZ"
+          ]
+        ],
+        "schedule_group_id": "$ref:sched:Any Time"
+      },
+      "ref": "pol:IEC62443 | Sample | New asset in DMZ",
+      "risk": "medium",
+      "reversible": true,
+      "undo": {
+        "tool": "disable_detection_policy",
+        "args": {
+          "policy_id": "$id"
+        },
+        "note": "disable is reversible; prefer it over archive"
+      },
+      "note": "A new asset appears inside zone 'DMZ'."
+    },
+    {
+      "n": 30,
+      "phase": "4 policies",
+      "action": "create",
+      "tool": "create_asset_policy",
+      "args": {
+        "title": "IEC62443 | Sample | New asset in Control",
+        "level": "medium",
+        "initial_state": "disabled",
+        "event": "NewAssetDiscovered",
+        "src": [
+          [
+            "$ref:ag:IEC62443 | Zone | Control | 1",
+            "$ref:ag:IEC62443 | Zone | Control | 2"
+          ]
+        ],
+        "schedule_group_id": "$ref:sched:Any Time"
+      },
+      "ref": "pol:IEC62443 | Sample | New asset in Control",
+      "risk": "medium",
+      "reversible": true,
+      "undo": {
+        "tool": "disable_detection_policy",
+        "args": {
+          "policy_id": "$id"
+        },
+        "note": "disable is reversible; prefer it over archive"
+      },
+      "note": "A new asset appears inside zone 'Control'."
+    },
+    {
+      "n": 31,
+      "phase": "4 policies",
+      "action": "create",
+      "tool": "create_asset_policy",
+      "args": {
+        "title": "IEC62443 | Sample | New asset in Safety",
+        "level": "medium",
+        "initial_state": "disabled",
+        "event": "NewAssetDiscovered",
+        "src": [
+          [
+            "$ref:ag:IEC62443 | Zone | Safety"
+          ]
+        ],
+        "schedule_group_id": "$ref:sched:Any Time"
+      },
+      "ref": "pol:IEC62443 | Sample | New asset in Safety",
+      "risk": "medium",
+      "reversible": true,
+      "undo": {
+        "tool": "disable_detection_policy",
+        "args": {
+          "policy_id": "$id"
+        },
+        "note": "disable is reversible; prefer it over archive"
+      },
+      "note": "A new asset appears inside zone 'Safety'."
+    },
+    {
+      "n": 32,
+      "phase": "5 verify",
+      "action": "verify",
+      "tool": "list_asset_groups",
+      "args": {},
+      "ref": null,
+      "risk": "low",
+      "reversible": true,
+      "undo": null,
+      "note": "Confirm every planned group exists."
+    },
+    {
+      "n": 33,
+      "phase": "5 verify",
+      "action": "verify",
+      "tool": "list_detection_policies",
+      "args": {
+        "search": "IEC62443"
+      },
+      "ref": null,
+      "risk": "low",
+      "reversible": true,
+      "undo": null,
+      "note": "Confirm policies exist with the expected enabled state."
+    }
+  ]
+}
