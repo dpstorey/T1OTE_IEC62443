@@ -1,5 +1,5 @@
 ---
-name: T1OTE-iec62443-onboarding
+name: t1ote-iec62443-onboarding
 description: Guided onboarding of a Tenable OT site to an IEC 62443 zones-and-conduits baseline. Collects zones, CIDR blocks and conduits from chat or a spreadsheet, shows a plan, and only after approval creates asset groups and detection policies through the Tenable OT MCP (Enterprise Manager edition).
 status: draft
 ---
@@ -56,6 +56,10 @@ Call `tenable_ot_status`. If write tools are not enabled, say so and offer the *
 ### 1. Site
 
 `list_paired_icps`. Ask which site. Record its `site_uuid`; use it on every later call. Ask for the customer's name for the site (goes into the model).
+
+Once the site is chosen, report **classification quality** (read-only, one call; report `data_quality_pct`, where higher is better): `get_classification_summary` with `site_uuid`. If the tool is not in the tool list, fall back to two `query_assets` calls with `limit: 1`, one unfiltered and one with `kind: "endpoint"`, and use each `total_count`. Never list assets for this.
+
+Say it in one line, for example "Data quality 58.3%: 1,454 of 3,487 assets are still Endpoint (not yet classified)". Every asset starts as Endpoint and moves off only when positively classified, so low data quality means discovery or enrichment has not settled. If `quality` is `poor` (data quality below the target, 90% unless the user set `min_quality_pct`), warn that Type-based asset groups (for example "all Controllers") will miss assets and that zone membership built on type is unreliable until classification improves; prefer IP, segment or asset-list groups for those zones. Do not block the flow; this is advice, not a gate.
 
 ### 2. Input method
 

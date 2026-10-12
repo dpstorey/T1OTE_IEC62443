@@ -69,7 +69,7 @@
         }
       ],
       "transport": "mixed",
-      "verify": true
+      "verify": false
     },
     "profinet": {
       "label": "PROFINET",
@@ -79,7 +79,7 @@
         }
       ],
       "transport": "mixed",
-      "verify": true
+      "verify": false
     },
     "opc ua": {
       "label": "OPC UA (binary)",

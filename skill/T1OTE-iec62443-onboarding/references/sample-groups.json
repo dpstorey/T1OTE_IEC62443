@@ -1,5 +1,5 @@
 {
-  "_comment": "Sample asset groups (create_sample_groups): Filter groups on the asset 'type' field (same expression the EM-MCP asset queries use). Whether the Filter group accepts this exact expression is a lab-verify item; a server rejection stops the apply. These are tags for browsing and for the sample policies, not zones.",
+  "_comment": "Sample asset groups (create_sample_groups): Filter groups on the asset 'type' field (same expression the EM-MCP asset queries use). Verified live: Tenable accepts a Filter group with type In [...] (tested with Controller). The individual type values come from the Tenable OT MCP asset-type list; a server rejection stops the apply. These are tags for browsing and for the sample policies, not zones.",
   "groups": [
     {
       "key": "controllers",

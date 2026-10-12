@@ -197,7 +197,7 @@ def build(model: dict[str, Any], existing: dict[str, Any] | None = None) -> dict
             if name.lower() in pl.ex_ag:
                 pl.add("3 sample groups", "create_asset_group", args, ref=ref, action="skip", existing_id=pl.ex_ag[name.lower()])
             else:
-                pl.add("3 sample groups", "create_asset_group", args, ref=ref, undo=undo_group("archive_asset_group"), note="Sample tag group (Filter on asset type; lab-verify the filter shape on first apply).")
+                pl.add("3 sample groups", "create_asset_group", args, ref=ref, undo=undo_group("archive_asset_group"), note="Sample tag group (Filter on asset type; filter shape verified live with type In [...]).")
 
     # ---- phase 4: policies
     def pos(refs: list[str]) -> list[list[str]]:

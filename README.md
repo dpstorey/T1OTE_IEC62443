@@ -61,9 +61,11 @@ Draft. The unit tests pass (`pytest tests/unit`) and CI is green.
 
 Verified on a live Tenable OT site: an unauthorized-conversation (boundary) policy created with empty policy actions and created disabled (`initial_state=disabled`, a create followed by a disable), the system "Any Time" schedule and "Any Protocol" protocol groups, and a destination of one negated list per zone block, which shows in the UI as "(Not in zone A) and (Not in zone B)".
 
-Also verified live: a protocol group using the EtherNet/IP enum value `ETHIP`, and that Tenable accepts a user-defined group whose name matches a predefined one.
+Also verified live: protocol groups using the enum values `ETHIP` (EtherNet/IP), `IEC61850` and `PROFINET`, and that Tenable accepts a user-defined group whose name matches a predefined one.
 
-Not yet verified live: the sample filter groups, protocol enum names for IEC 61850 and PROFINET, and direction behaviour with UDP. Treat the first run as a dry run on a test site.
+Sample filter groups: Tenable accepts a Filter group created with `type In [...]` (tested with `Controller`; it matched 8 assets). The other sample types (`Plc`, `Rtu`, `Ied`, `Hmi`, `OtWorkstation`, `Firewall`) come from the asset-type list the Tenable OT MCP already uses for asset queries; they are expected to work but were not each created live.
+
+Not yet verified live: direction behaviour with UDP. Treat the first run as a dry run on a test site.
 
 ## Layout
 
