@@ -33,6 +33,12 @@ Tested with LibreChat and Qwen.
 2. Add the Tenable OT MCP server (Enterprise Manager edition, with write tools enabled) to your LibreChat agent and enable the tools listed above.
 3. Restart or reload LibreChat so it picks up the new skill, then start a new chat with the agent and ask it to onboard a site to IEC 62443.
 
+**How the skill is found.** The skill lives in a subfolder (`skill/T1OTE-iec62443-onboarding/`) rather than the repository root, so install it by copying that folder, not by cloning the repository into the skills directory. The client discovers a skill from the `name:` and `description:` in the frontmatter of the `SKILL.md` inside the copied folder; the folder's name and letter case do not matter. Everything the skill reads (`references/`, `scripts/`) is inside that folder, so it is self-contained once copied.
+
+### Invoking the skill
+
+There is no slash command. The skill is loaded by the agent when the request matches its description, so start a chat and say something like "Onboard my Tenable OT site to IEC 62443". The agent will then collect your zones and conduits, show a numbered plan, and wait for your approval before creating anything.
+
 ## Quick start
 
 Ask the agent to onboard a site to IEC 62443. It will:
